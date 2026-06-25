@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>عطرك — سوق العطور المستعملة</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0D0B0F;
+    color: #E8E4DC;
+    font-family: 'Segoe UI', 'Noto Kufi Arabic', 'Tahoma', sans-serif;
+    direction: rtl;
+    min-height: 100vh;
+  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0D0B0F; }
+  ::-webkit-scrollbar-thumb { background: #C9A96E44; border-radius: 3px; }
+
+  /* HEADER */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 1px solid #C9A96E22;
+    background: rgba(13,11,15,0.95);
+    backdrop-filter: blur(10px);
+    padding: 0 24px;
+  }
+  .header-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .logo-text-main { color: #C9A96E; font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+  .logo-text-sub { color: #555; font-size: 10px; letter-spacing: 1px; }
+  .nav { display: flex; gap: 8px; align-items: center; }
+  .nav-btn {
+    background: transparent; border: none;
+    color: #888; padding: 8px 16px; border-radius: 20px;
+    cursor: pointer; font-size: 13px; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .nav-btn.active, .nav-btn:hover { background: #C9A96E22; color: #C9A96E; }
+  .btn-sell {
+    background: linear-gradient(135deg, #C9A96E, #a07840);
+    border: none; color: #0D0B0F;
+    padding: 9px 20px; border-radius: 20px;
+    cursor: pointer; font-size: 13px; font-weight: 700;
+    font-family: inherit; transition: opacity 0.2s;
+  }
+  .btn-sell:hover { opacity: 0.88; }
+
+  /* SEARCH */
+  .search-bar {
+    max-width: 1100px; margin: 24px auto 0; padding: 0 24px;
+    display: flex; gap: 12px; align-items: center;
+  }
+  .search-wrap { position: relative; flex: 1; }
+  .search-icon {
+    position: absolute; right: 14px; top: 50%;
+    transform: translateY(-50%); color: #555; pointer-events: none;
+  }
+  input[type=text], input[type=number], input[type=tel], textarea, select {
+    background: #161214; border: 1px solid #2a2a2a;
+    border-radius: 12px; color: #E8E4DC;
+    padding: 12px 14px; font-size: 14px;
+    outline: none; font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  input[type=text]:focus, input[type=number]:focus,
+  input[type=tel]:focus, textarea:focus, select:focus {
+    border-color: #C9A96E55;
+  }
+  .search-input { width: 100%; padding-right: 42px; }
+  select { cursor: pointer; }
+
+  /* MAIN */
+  main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+  /* STATS */
+  .stats-bar { display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
+  .stat-card {
+    background: #161214; border-radius: 12px; padding: 14px 20px;
+    border: 1px solid #C9A96E22; display: flex; gap: 10px; align-items: center;
+  }
+  .stat-icon { font-size: 20px; }
+  .stat-value { color: #C9A96E; font-size: 20px; font-weight: 700; }
+  .stat-label { color: #666; font-size: 11px; }
+
+  /* BRAND SECTION */
+  .brand-section { margin-bottom: 40px; }
+  .brand-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px; cursor: pointer;
+  }
+  .brand-bar { width: 4px; height: 28px; border-radius: 2px; }
+  .brand-name { color: #E8E4DC; font-size: 18px; font-weight: 700; }
+  .brand-more { color: #555; font-size: 12px; margin-right: auto; }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .btn-more {
+    margin-top: 12px; background: transparent;
+    border: 1px solid #333; color: #888;
+    padding: 8px 20px; border-radius: 20px;
+    cursor: pointer; font-size: 13px; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .btn-more:hover { border-color: #C9A96E55; color: #C9A96E; }
+
+  /* LISTING CARD */
+  .card {
+    background: linear-gradient(145deg, #1a1618, #141214);
+    border: 1px solid #C9A96E22;
+    border-radius: 16px; padding: 20px;
+    cursor: pointer; transition: all 0.2s ease;
+    position: relative; overflow: hidden;
+  }
+  .card:hover { border-color: #C9A96E66; transform: translateY(-2px); }
+  .card.sold { opacity: 0.55; cursor: default; }
+  .card.sold:hover { transform: none; border-color: #2a2a2a; }
+  .sold-badge {
+    position: absolute; top: 14px; left: 14px;
+    background: #e74c3c; color: #fff; font-size: 10px;
+    font-weight: 700; padding: 3px 10px; border-radius: 20px;
+    letter-spacing: 1px;
+  }
+  .brand-line {
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  }
+  .card-img {
+    width: 100%; height: 140px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px; overflow: hidden;
+  }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .bottle-placeholder { transform: scale(2.5); opacity: 0.8; }
+  .card-brand {
+    font-size: 10px; color: #C9A96E; font-weight: 700;
+    letter-spacing: 2px; margin-bottom: 4px; text-transform: uppercase;
+  }
+  .card-name {
+    color: #E8E4DC; font-size: 15px; font-weight: 600;
+    margin-bottom: 8px; line-height: 1.3;
+  }
+  .badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .badge {
+    border-radius: 20px; padding: 2px 10px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+  }
+  .card-price { display: flex; align-items: baseline; gap: 8px; }
+  .price-main { color: #C9A96E; font-size: 20px; font-weight: 700; font-family: monospace; }
+  .price-cur { color: #888; font-size: 12px; }
+  .price-old { color: #555; font-size: 12px; text-decoration: line-through; margin-right: auto; }
+  .card-seller {
+    margin-top: 10px; padding-top: 10px; border-top: 1px solid #2a2a2a;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .seller-name { color: #666; font-size: 11px; }
+  .seller-city { color: #555; font-size: 11px; }
+
+  /* BRAND PAGE */
+  .brand-page-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+  }
+  .btn-back {
+    background: #1a1618; border: 1px solid #333; color: #888;
+    padding: 8px 14px; border-radius: 20px;
+    cursor: pointer; font-size: 13px; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .btn-back:hover { color: #C9A96E; border-color: #C9A96E44; }
+  .brand-page-name { color: #E8E4DC; font-size: 22px; font-weight: 700; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000; padding: 20px;
+  }
+  .modal-box {
+< truncated lines 184-563 >
+function openBrand(brand) {
+  selectedBrand = brand; currentView = 'brand';
+  document.getElementById('nav-home').classList.remove('active');
+  renderAll();
+}
+
+// ============ SELL MODAL ============
+function openSellModal() {
+  sellCondition = CONDITIONS[0];
+  sellImageData = null;
+  document.getElementById('sellModalBox').innerHTML = sellFormHTML();
+  document.getElementById('sellModalOverlay').style.display = 'flex';
+}
+function closeSellModal() {
+  document.getElementById('sellModalOverlay').style.display = 'none';
+}
+function sellFormHTML() {
+  const brandsOpts = BRANDS.map(b=>`<option value="${b}">${b}</option>`).join('');
+  const sizesOpts = SIZES.map(s=>`<option value="${s}" ${s==='100ml'?'selected':''}>${s}</option>`).join('');
+  const remOpts = REMAINING.map(r=>`<option value="${r}">${r}</option>`).join('');
+  const cityOpts = CITIES.map(c=>`<option value="${c}">${c}</option>`).join('');
+  const condBtns = CONDITIONS.map(c=>`<button type="button" class="cond-btn ${c===sellCondition?'active':''}" onclick="setSellCond('${c}')">${c}</button>`).join('');
+  return `
+    <button class="modal-close" onclick="closeSellModal()">×</button>
+    <h2 class="modal-title">بيع عطرك</h2>
+    <p class="modal-sub">سيتم التواصل معك لتنسيق عملية البيع. عمولة المنصة ٥٪ فقط.</p>
+    <div class="form-grid">
+      <div class="full"><label class="form-label">اسمك</label><input type="text" id="f_seller" placeholder="محمد عبدالله" style="width:100%"/></div>
+      <div class="full"><label class="form-label">رقم الجوال</label><input type="tel" id="f_phone" placeholder="05xxxxxxxx" style="width:100%"/></div>
+      <div class="full"><label class="form-label">اسم العطر</label><input type="text" id="f_name" placeholder="مثال: Black Orchid" style="width:100%"/></div>
+      <div><label class="form-label">البراند</label><select id="f_brand" style="width:100%">${brandsOpts}</select></div>
+      <div><label class="form-label">المدينة</label><select id="f_city" style="width:100%">${cityOpts}</select></div>
+      <div><label class="form-label">الحجم</label><select id="f_size" style="width:100%">${sizesOpts}</select></div>
+      <div><label class="form-label">المتبقي من العطر</label><select id="f_rem" style="width:100%">${remOpts}</select></div>
+      <div class="full"><label class="form-label">الحالة</label><div class="condition-row" id="condRow">${condBtns}</div></div>
+      <div><label class="form-label">السعر المطلوب (ر.س)</label><input type="number" id="f_price" placeholder="350" style="width:100%" oninput="updateCommission()"/></div>
+      <div><label class="form-label">عمولة المنصة (٥٪)</label><div class="commission-display" id="commDisplay">—</div></div>
+      <div class="full"><label class="form-label">وصف إضافي (اختياري)</label><textarea id="f_desc" placeholder="سبب البيع، ملاحظات عن العطر..." style="width:100%"></textarea></div>
+      <div class="full">
+        <label class="form-label">صورة العطر</label>
+        <label class="img-upload" id="imgUploadLabel">
+          <input type="file" accept="image/*" id="imgInput" onchange="handleImage(event)"/>
+          <div id="imgPreviewWrap">
+            <div class="img-upload-icon">📸</div>
+            <div style="font-size:13px">اضغط لرفع صورة العطر</div>
+            <div style="font-size:11px;color:#444;margin-top:4px">JPG, PNG — حتى 5MB</div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="submitSell()">🌿 نشر إعلان البيع</button>`;
+}
+function setSellCond(c) {
+  sellCondition = c;
+  document.querySelectorAll('.cond-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent === c);
+  });
+}
+function updateCommission() {
+  const p = parseInt(document.getElementById('f_price')?.value) || 0;
+  document.getElementById('commDisplay').textContent = p ? Math.round(p*0.05).toLocaleString()+' ر.س' : '—';
+}
+function handleImage(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    sellImageData = ev.target.result;
+    document.getElementById('imgPreviewWrap').innerHTML =
+      `<img src="${sellImageData}" style="width:100%;height:160px;object-fit:cover;border-radius:8px"/>`;
+  };
+  reader.readAsDataURL(file);
+}
+function submitSell() {
+  const name = document.getElementById('f_name')?.value?.trim();
+  const seller = document.getElementById('f_seller')?.value?.trim();
+  const price = parseInt(document.getElementById('f_price')?.value);
+  if (!name || !seller || !price) { showToast('⚠️ يرجى تعبئة الحقول المطلوبة','#e74c3c'); return; }
+  const newL = {
+    id: nextId++,
+    name,
+    brand: document.getElementById('f_brand').value,
+    price,
+    originalPrice: Math.round(price * 1.6),
+    size: document.getElementById('f_size').value,
+    remaining: document.getElementById('f_rem').value,
+    condition: sellCondition,
+    seller,
+    city: document.getElementById('f_city').value,
+    description: document.getElementById('f_desc').value,
+    image: sellImageData,
+    sold: false,
+    date: new Date().toISOString().split('T')[0],
+  };
+  listings.unshift(newL);
+  closeSellModal();
+  updateCityFilter();
+  renderAll();
+  showToast('✅ تم نشر إعلانك بنجاح!');
+}
+
+// ============ DETAIL MODAL ============
+function openDetail(id) {
+  const l = listings.find(x=>x.id===id); if(!l) return;
+  const color = bc(l.brand);
+  const savings = l.originalPrice - l.price;
+  const savPct = Math.round((savings/l.originalPrice)*100);
+  const comm = Math.round(l.price*0.05);
+  const imgContent = l.image
+    ? `<img src="${l.image}" alt="${l.name}" style="width:100%;height:100%;object-fit:cover"/>`
+    : `<div style="transform:scale(2.2)">${bottleSVG(color)}</div>`;
+  document.getElementById('detailModalBox').innerHTML = `
+    <button class="modal-close" onclick="closeDetailModal()">×</button>
+    <div class="detail-top">
+      <div class="detail-img" style="background:radial-gradient(ellipse at center,${color}20,#0D0B0F);border:1px solid ${color}30">
+        ${imgContent}
+      </div>
+      <div>
+        <div class="detail-brand">${l.brand}</div>
+        <div class="detail-name">${l.name}</div>
+        <div class="badges">
+          ${badge(l.size,'#8a8a8a')}
+          ${badge(l.remaining+' متبقي','#C9A96E')}
+          ${badge(l.condition,'#5dade2')}
+        </div>
+      </div>
+    </div>
+    <div class="price-box">
+      <div class="price-row"><span class="price-label">السعر الجديد أصلاً</span><span class="price-original">${l.originalPrice.toLocaleString()} ر.س</span></div>
+      <div class="price-row"><span class="price-label2">سعر البيع</span><span class="price-big">${l.price.toLocaleString()} ر.س</span></div>
+      <div class="savings-row"><span class="savings-text">توفير ${savPct}٪</span><span class="savings-val">${savings.toLocaleString()} ر.س</span></div>
+    </div>
+    ${l.description ? `<div class="desc-section"><div class="desc-label">ملاحظات البائع</div><div class="desc-text">${l.description}</div></div>` : ''}
+    <div class="seller-box">
+      <div class="seller-item"><div class="seller-item-label">البائع</div><div class="seller-item-val">${l.seller}</div></div>
+      <div class="seller-item"><div class="seller-item-label">المدينة</div><div class="seller-item-val">${l.city}</div></div>
+      <div class="seller-item seller-item-date" style="margin-right:auto"><div class="seller-item-label">تاريخ النشر</div><div class="seller-item-val">${l.date}</div></div>
+    </div>
+    <div class="commission-note">
+      <span style="font-size:16px">ℹ️</span>
+      <span class="commission-note-text">عمولة المنصة ٥٪ من قيمة البيع = <strong style="color:#C9A96E">${comm} ر.س</strong> يتحملها البائع بعد اتمام الصفقة</span>
+    </div>
+    ${!l.sold ? `<button class="btn-primary" onclick="openContact(${l.id})">📞 تواصل مع البائع</button>` : ''}
+  `;
+  document.getElementById('detailModalOverlay').style.display = 'flex';
+}
+function closeDetailModal() {
+  document.getElementById('detailModalOverlay').style.display = 'none';
+}
+
+// ============ CONTACT MODAL ============
+function openContact(id) {
+  closeDetailModal();
+  const l = listings.find(x=>x.id===id); if(!l) return;
+  document.getElementById('contactModalBox').innerHTML = `
+    <button class="modal-close" onclick="closeContactModal()">×</button>
+    <div class="contact-center">
+      <div class="contact-icon">📞</div>
+      <h3 class="contact-title">التواصل مع البائع</h3>
+      <p class="contact-sub">سيتم التنسيق معك من المنصة خلال ٢٤ ساعة لإتمام الصفقة</p>
+      <div class="contact-item-box">
+        <div class="contact-item-label">تهمك</div>
+        <div class="contact-item-name">${l.brand} – ${l.name}</div>
+        <div class="contact-item-price">${l.price.toLocaleString()} ر.س</div>
+      </div>
+      <input type="tel" class="contact-input" id="buyerPhone" placeholder="رقم جوالك للتواصل"/>
+      <button class="btn-primary" onclick="submitContact()">أرسل طلبي</button>
+    </div>`;
+  document.getElementById('contactModalOverlay').style.display = 'flex';
+}
+function closeContactModal() {
+  document.getElementById('contactModalOverlay').style.display = 'none';
+}
+function submitContact() {
+  closeContactModal();
+  showToast('✅ تم إرسال طلبك! سنتواصل معك قريباً');
+}
+
+// ============ INIT ============
+updateCityFilter();
+renderAll();
+</script>
+</body>
+</html>
